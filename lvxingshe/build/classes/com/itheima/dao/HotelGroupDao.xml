@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.dao.HotelGroupDao" >
+   
+	<!-- 查询所有hotelgroup数据 -->
+	<select id="findAllHotelGroups" resultMap="AllHotelgroupsResult">
+		SELECT * from t_hotel_group
+	</select>
+	<resultMap type="Hotelgroup" id="AllHotelgroupsResult">
+		<id property="ghindex" column="ghindex" />
+		<result property="group_id" column="group_id" />
+		<result property="hotel_id" column="hotel_id" />
+	</resultMap>
+	
+	<!--  插入hotelgroup数据 -->
+    <insert id="addHotelGroup" parameterType="Hotelgroup" >	        
+		insert into t_hotel_group(group_id,hotel_id)
+		values(#{group_id},#{hotel_id})
+	</insert>
+	
+	<!-- 更新hotelgroup关系 -->
+	<update id="updateHotelGroup" parameterType="java.util.Map">
+		update t_hotel_group 
+		set hotel_id= #{new_hotel_id} 
+		where group_id=#{group_id} and hotel_id=#{hotel_id}
+	</update>
+	<!-- 删除一条hotelgroup -->
+	<delete id="delHotelGroup" parameterType="Hotelgroup">
+		delete from t_hotel_group 
+		where group_id=#{group_id} and hotel_id=#{hotel_id}
+	</delete> 
+</mapper>

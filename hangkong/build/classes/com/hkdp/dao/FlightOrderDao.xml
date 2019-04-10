@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hkdp.dao.FlightOrderDao">
+	<!-- 查询满足用户条件的航班数据 -->
+	<select id="queryFlights" resultMap="FlightsResult" parameterType="Flight">
+		SELECT f.*,a.*,c.* from t_flight f,t_airliner a,t_com c where start_station= #{start_station} and 
+		destn_station= #{destn_station} and start_date= #{start_date,jdbcType=DATE} and f.c_comid=c.com_id 
+		and f.a_planeid=a.plane_id
+	</select>
+	<resultMap type="Flight" id="FlightsResult">
+		<id property="flight_id" column="flight_id" />
+		<result property="c_comid" column="c_comid" />
+		<result property="a_planeid" column="a_planeid" />
+		<result property="start_station" column="start_station" />
+		<result property="destn_station" column="destn_station" />
+		<result property="start_date"  column="start_date" jdbcType="DATE"/>
+		<result property="start_time" column="start_time" jdbcType="TIME"/>
+		<result property="end_time" column="end_time" jdbcType="TIME"/>
+		<result property="time_long" column="time_long" />
+		<result property="load_num" column="load_num" />
+		<result property="odd_num" column="odd_num" />
+		<result property="price" column="price" />
+		<association property="aircom" javaType="Aircom">
+			<id property="com_id" column="com_id" />
+			<result property="com_name" column="com_name" />
+		</association>
+		<association property="airliner" javaType="Airliner">
+			<id property="plane_id" column="plane_id" />
+			<result property="plane_model" column="plane_model" />
+		</association>
+	</resultMap>
+	<insert id="generOrder" parameterType="Order" >	        
+		insert into t_order(order_id,u_userid,f_flightid,order_time,status) 
+		values(#{order_id},#{u_userid},#{f_flightid},#{order_time},#{status})
+	</insert> 
+	<update id="payOrder" parameterType="Order">
+		update t_user 
+		set balance= balance-#{flight.price} 
+		where user_id=#{u_userid}
+	</update>
+	<update id="updateOddNum" parameterType="Order">
+		update t_flight 
+		set odd_num= odd_num-1 
+		where flight_id=#{f_flightid}
+	</update>
+		<insert id="generTicket" parameterType="Ticket" >	        
+		insert into t_ticket 
+		values(#{ticket_id},#{o_orderid},#{gate_num},#{seat_num},#{board_time})
+	</insert>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.hkdp.dao.ManaAirlinerDao">
+    <insert id="addAirliner" parameterType="Airliner">
+    insert into t_airliner(plane_id,plane_model)
+    values(#{plane_id},#{plane_model})
+    </insert>
+    <update id="updateAirliner" parameterType="Airliner">
+    update t_airliner set plane_model=#{plane_model}
+    where plane_id=#{plane_id}
+    </update>
+    <delete id="deleteAirliner" parameterType="String">
+    delete from t_airliner where plane_id=#{plane_id}
+    </delete>
+    <select id="selectAirliner" parameterType="String"
+                               resultType="Airliner">
+    select * from t_airliner where plane_id=#{plane_id}
+    </select>
+    </mapper>

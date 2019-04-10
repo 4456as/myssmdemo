@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.hkdp.dao.TicketAlterDao">
+    <select id="selectTicket" parameterType="String"
+                               resultType="Ticket">
+    select t_order.order_id,t_ticket.*
+    from t_user,t_ticket
+    where t_order.order_id=t_ticket.o_orderid
+    and t_order.order_id=#{order_id}
+    </select>
+    <update id="updateTicket" parameterType="Order">
+    update t_order set f_flightid=#{f_flightid}
+    where order_id=#{order_id}
+    </update>
+    </mapper>

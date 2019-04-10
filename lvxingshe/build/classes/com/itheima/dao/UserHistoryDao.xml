@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.dao.UserHistoryDao">
+	<!-- 1.嵌套查询的方式查询我参加过的团 -->
+	<!-- <select id="findUserGroup" parameterType="Integer" resultMap="UserGroupResult">
+		select * from t_user WHERE userid=#{userid}
+	</select>
+	<resultMap type="User" id="UserGroupResult">
+		<id property="userid" column="userid" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="cardid" column="cardid" />
+		<result property="sex" column="sex" />
+		<result property="realname" column="realname" />
+		<result property="age" column="age" />
+		<result property="local" column="local" />
+		<result property="tel" column="tel" />
+		<collection property="travelgrouplist" column="userid" ofType="Travelgroup"
+			select="com.itheima.dao.UserHistoryDao.findGroupById">
+		</collection>
+	</resultMap> 
+
+	 <select id="findGroupById" parameterType="Integer" resultType="Travelgroup">
+		SELECT * from t_travelgroup where groupid IN(
+		SELECT group_id as groupid FROM t_order WHERE user_id = #{userid}
+		)
+	</select>  -->
+	<!-- 2.嵌套结果的方式查询我参加过的团 -->
+ 	<select id="findUserGroup" parameterType="Integer" 
+	         resultMap="UserGroupResult">
+	    select u.*,tg.*
+	    from t_order o,t_user u,t_travelgroup tg
+	    WHERE u.userid=o.user_id 
+	    and tg.groupid=o.group_id 
+	    and u.userid=#{userid}
+	</select>
+	<resultMap type="User" id="UserGroupResult">
+	    <id property="userid" column="userid" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="cardid" column="cardid" />
+		<result property="sex" column="sex" />
+		<result property="realname" column="realname" />
+		<result property="age" column="age" />
+		<result property="local" column="local" />
+		<result property="tel" column="tel" />
+	    <collection property="travelgrouplist" ofType="Travelgroup">
+	        <id property="groupid" column="groupid" />
+	        <result property="groupname" column="groupname" />
+	        <result property="grouptel" column="grouptel" />
+	        <result property="agen_id" column="agen_id" />
+	        <result property="startspot" column="startspot" />
+	        <result property="price" column="price" />
+	        <result property="sce_id" column="sce_id" />
+	        <result property="maxpeople" column="maxpeople" />
+	        <result property="surpeople" column="surpeople" />
+	    </collection>
+	</resultMap> 
+	
+	<!-- 3.嵌套结果方式查询我的历史订单  -->
+	<select id="findUserOrder" parameterType="Integer" 
+	         resultMap="UserOrderResult">
+	    select u.*,o.orderid,o.group_id 
+	    from t_order o,t_user u 
+	    WHERE u.userid=o.user_id 
+	    and u.userid=#{userid}
+	</select>
+	<resultMap type="User" id="UserOrderResult">
+	    <id property="userid" column="userid" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="cardid" column="cardid" />
+		<result property="sex" column="sex" />
+		<result property="realname" column="realname" />
+		<result property="age" column="age" />
+		<result property="local" column="local" />
+		<result property="tel" column="tel" />
+	    <collection property="orderlist" ofType="Order">
+	        <id property="orderid" column="orderid" />
+	        <result property="group_id" column="group_id" />
+	    </collection>
+	</resultMap>
+	<!-- 4.跨多表嵌套结果方式查询我去过的景点-->
+	<select id="findUserScenery" parameterType="Integer" 
+	         resultMap="UserSceneryResult">
+	    select u.*,ss.* 
+	    from t_order o,t_user u,t_travelgroup tg,t_scenicspot ss 
+	    WHERE u.userid=o.user_id 
+	    and tg.groupid=o.group_id 
+	    and tg.sce_id=ss.sceid 
+	    and u.userid=#{userid}
+	</select>
+	<resultMap type="User" id="UserSceneryResult">
+	    <id property="userid" column="userid" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="cardid" column="cardid" />
+		<result property="sex" column="sex" />
+		<result property="realname" column="realname" />
+		<result property="age" column="age" />
+		<result property="local" column="local" />
+		<result property="tel" column="tel" />
+	    <collection property="scenicspotlist" ofType="ScenicSpot">
+	        <id property="sceid" column="sceid" />
+	        <result property="scename" column="scename" />
+	        <result property="sceinfo" column="sceinfo" />
+	    </collection>
+	</resultMap>
+	<!-- 5.嵌套查询旅游团所属的旅行社信息-->
+	<select id="findGroupAgency" parameterType="Integer" resultMap="GroupAgencyResult">
+		select * from t_travelgroup WHERE groupid=#{groupid}
+	</select>
+	<resultMap type="Travelgroup" id="GroupAgencyResult">
+		<id property="groupid" column="groupid" />
+	    <result property="groupname" column="groupname" />
+	    <result property="grouptel" column="grouptel" />
+	    <result property="startspot" column="startspot" />
+	    <result property="price" column="price" />
+	    <result property="sce_id" column="sce_id" />
+	    <result property="maxpeople" column="maxpeople" />
+	    <result property="surpeople" column="surpeople" />
+		<association property="travelagency" column="agen_id" javaType="TravelAgency"
+			select="com.itheima.dao.UserHistoryDao.findAgencyById">
+		</association>
+	</resultMap> 
+	 <select id="findAgencyById" parameterType="Integer" resultType="TravelAgency">
+		SELECT * from t_travelagency where agenid=#{agen_id}
+	</select> 
+</mapper>

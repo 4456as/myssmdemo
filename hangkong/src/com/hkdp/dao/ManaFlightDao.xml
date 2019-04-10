@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.hkdp.dao.ManaFlightDao">
+    <insert id="addFlight" parameterType="Flight">
+    insert into t_flight(flight_id,c_comid,a_planeid,start_station,destn_station,
+    start_date,start_time,end_time,time_long,load_num,odd_num,price) 
+    values(#{flight_id},#{c_comid},#{a_planeid},#{start_station},#{destn_station},
+    #{start_date,jdbcType=DATE},#{start_time,jdbcType=TIME},#{end_time,jdbcType=TIME},#{time_long},#{load_num},#{odd_num},#{price})
+    </insert>
+    <update id="updateFlight" parameterType="Flight">
+    update t_flight set start_time=#{start_time},end_time=#{end_time},time_long=#{time_long}
+    where flight_id=#{flight_id}
+    </update>
+    <delete id="deleteFlight" parameterType="String">
+    delete from t_flight where flight_id=#{flight_id}
+    </delete>
+    <select id="selectFlight" parameterType="String"
+                               resultType="Flight">
+    select * from t_flight where flight_id=#{flight_id}
+    </select>
+    <select id="selectAircomByFlight" parameterType="String"
+                               resultMap="selectAircomByFlightResult">
+    select t_flight.*,t_com.com_id,t_com.com_name
+     from t_flight,t_com
+     where t_flight.c_comid=t_com.com_id
+     and t_flight.flight_id=#{flight_id}
+    </select>
+    <resultMap type="Flight" id="selectAircomByFlightResult">
+    <id property="flight_id" column="flight_id"/>
+     <result property="c_comid" column="c_comid"/>
+     <collection property="aircom1" ofType="Aircom">
+     <id property="com_id" column="com_id"/>
+     <result property="com_name" column="com_name"/>
+     </collection>
+    </resultMap>
+    <select id="selectAirlinerByFlight" parameterType="String"
+                               resultMap="selectAirlinerByFlightResult">
+    select t_flight.*,t_airliner.plane_id,t_airliner.plane_model
+    from t_flight,t_airliner
+    where t_flight.a_planeid=t_airliner.plane_id
+    and t_flight.flight_id=#{flight_id}
+    </select>
+    <resultMap type="Flight" id="selectAirlinerByFlightResult">
+    <id property="flight_id" column="flight_id"/>
+     <result property="a_planeid" column="a_planeid"/>
+     <result property="price" column="price"/>
+     <association property="airliner1" javaType="Airliner">
+     <id property="plane_id" column="plane_id"/>
+     <result property="plane_model" column="plane_model"/>
+     </association>
+    </resultMap>
+    </mapper>

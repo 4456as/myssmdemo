@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace的名字需要跟接口的类名一致 -->
+<mapper namespace="com.hkdp.dao.ManaDao">
+	
+	<select id="getMana" resultType="Manager" parameterType="Manager">
+		select * from t_manager
+		<where>
+			<if test="mana_id != null ">mana_id=#{mana_id}</if>
+			<if test="mana_pword != null">and mana_pword=#{mana_pword}</if>
+		</where>
+    </select>
+    <select id="getUser" resultType="user" parameterType="user">
+		select * from t_user where user_id=#{user_id}
+		<!--  <where>
+			<if test="user_id != null ">user_id=#{user_id}</if>
+			<if test="user_name != null">and user_name=#{user_name}</if>
+		</where>-->
+    </select>
+    <select id="getUser1" resultType="user" parameterType="user">
+    <bind name="name" value="'%'+name+'%'"/>
+		select * from t_user
+		
+		<where>
+			<if test="ident_id != null ">ident_id=#{ident_id}</if>
+			<if test="user_name != null ">user_name=#{user_name}</if>
+			<if test="name != null">and name like #{name}</if>
+		</where>
+		
+    </select>
+         <!-- 添加用户信息 -->
+	    <insert id="addUser" parameterType="User">
+			insert into t_user(user_id,user_name,password,ident_id,name,sex,age,phone) 
+			values (#{user_id},#{user_name},#{password},#{ident_id},#{name},#{sex},#{age},#{phone})
+		</insert>
+		<!-- 修改个人信息 -->
+		<update id="updateUser" parameterType="User">
+			update t_user set user_name=#{user_name},ident_id=#{ident_id},name=#{name},phone=#{phone},sex=#{sex},
+			age=#{age}
+		where user_id=#{user_id}
+		</update>
+	
+	<delete id="deleteUser" parameterType="User">
+		delete from t_user where user_id=#{user_id}
+	</delete>
+	
+	<select id="getUserList" resultType="User">
+		select * from t_user
+	</select>
+	
+</mapper>

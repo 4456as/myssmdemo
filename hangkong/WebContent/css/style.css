@@ -1,0 +1,55 @@
+@CHARSET "UTF-8";
+body{
+      background-image: url("image/f.jpg");
+      background-size: 100%;
+    }
+    form label{
+        display: block;
+        padding: 10px 10px 5px 15px;
+        font-size: 11px;
+        color: #000000;
+      }
+      form input{
+        display: block;
+        margin: 5px 10px 10px 15px;
+        width: 80%;
+        background: #3366CC;
+        -moz-box-shadow: 0px 0px 4px #0033CC inset;
+        -webkit-box-shadow: 0px 0px 4px #0033CC inset;
+        box-shadow: 0px 0px 4px #0033CC inset;
+        border: 1px solid #0033CC;
+        padding: 5px;
+        color: #000000;
+        font-size: 13px;
+      }
+      form input:focus{
+        outline: 1px solid #555;
+        color: #FFF;
+      }
+      input[type="submit"],input[type="reset"]{
+        width: 30%;
+        color: #0033FF;
+        padding: 5px 10px;
+        /*float: right;*/
+        margin: 20px auto;
+        border: 1px solid #0066FF;
+        font-weight: lighter;
+        -moz-border-radius: 15px;
+          -webkit-border-radius: 15px;
+        border-radius: 10px;
+        background: #FFFFFF;
+       
+        text-shadow: 0 1px 1px #0066FF;
+      }
+      .rain{
+        height: 260px;
+        width: 300px;
+         padding: 10px 12px 12px 10px;
+         -moz-box-shadow: 10px 10px 10px #3300CC inset, -9px -9px 8px #3300CC inset;
+         -webkit-box-shadow: 8px 8px 8px #3300CC inset, -9px -9px 8px #3300CC inset;
+         box-shadow: 8px 8px 8px #3300CC inset, -9px -9px 8px #3300CC inset;
+         margin: 80px auto;
+      }
+      .a{
+        text-align: center;
+      }

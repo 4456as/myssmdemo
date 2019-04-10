@@ -1,0 +1,22 @@
+.a{
+	font-size: 100x;
+	line-height: 40px;
+	
+}
+ ul{
+	width: 100px;
+    margin: 0 auto;
+}
+.b{
+    margin: 0 auto;
+}
+.reg {
+	font-size: 30x;
+	line-height: 40px;
+}
+.reg input[type="text"], .reg input[type="password"] {
+	border: 1px solid #ccc;
+	padding: 5px;
+	height: 15px;
+	color: #999;
+}

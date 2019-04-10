@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hkdp.dao.TicketOutDao">
+	<select id="findUserByIdent" parameterType="String" resultType="User">
+		select * from t_user where ident_id=#{ident_id}
+	</select>
+	<select id="findTicketById" parameterType="User" resultMap="Tickets">
+			select ticket_id,o_orderid,gate_num,seat_num,board_time 
+			from t_ticket,t_order where  t_order.u_userid=#{user_id} 
+			and t_order.order_id=t_ticket.o_orderid
+	</select>
+	<resultMap type="Ticket" id="Tickets">
+		<id property="ticket_id" column="ticket_id" />
+		<result property="o_orderid" column="o_orderid" />
+		<result property="gate_num" column="gate_num" />
+		<result property="seat_num" column="seat_num" />
+		<result property="board_time" column="board_time" />
+	</resultMap>
+	<update id="changeOrderStatus" parameterType="Ticket">
+	update t_order set status=0 where t_order.order_id=#{o_orderid}
+	</update>
+	<delete id="outTicket" parameterType="Ticket">
+	delete from t_ticket where ticket_id=#{ticket_id}
+	</delete>
+</mapper>

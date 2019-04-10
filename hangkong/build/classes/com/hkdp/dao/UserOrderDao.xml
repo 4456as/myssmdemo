@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+      <mapper namespace="com.hkdp.dao.UserOrderDao">
+      <select id="selectOrderList" parameterType="User" resultType="order">
+      select * from t_order where    
+      u_userid = #{user_id}
+<!--       <if test="order_id != null">
+      and order_id like "%"#{order_id}"%"
+      </if>    
+      <if test="f_flightid != null">
+      and f_flightid like "%"#{f_flightid}"%"
+      </if> -->
+      <!--  <if test="order_time != null">
+      and order_time like "%"#{order_time}"%"
+      </if> -->
+      </select>
+      <delete id="deleteOrder" parameterType="Integer">
+      delete from t_order where order_id =#{order_id}   
+      </delete>
+      <delete id="deleteOrderauto">
+      delete from t_order where status = 0
+      </delete>
+      </mapper>

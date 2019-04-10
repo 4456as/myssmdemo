@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.hkdp.dao.ManaAircomDao">
+    <insert id="addAircom" parameterType="Aircom">
+    insert into t_com(com_id,com_name)
+    values(#{com_id},#{com_name})
+    </insert>
+    <update id="updateAircom" parameterType="Aircom">
+    update t_com set com_name=#{com_name}
+    where com_id=#{com_id}
+    </update>
+    <delete id="deleteAircom" parameterType="String">
+    delete from t_com where com_id=#{com_id}
+    </delete>
+    <select id="selectAircom" parameterType="String"
+                               resultType="Aircom">
+    select * from t_com where com_id=#{com_id}
+    </select>
+    </mapper>

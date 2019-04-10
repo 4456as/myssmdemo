@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.OrderDao">
+	<!-- 查询所有order数据 -->
+	<select id="findAllOrders" resultMap="AllOrdersResult">
+		SELECT * from t_order
+	</select>
+	<resultMap type="Order" id="AllOrdersResult">
+		<id property="orderid" column="orderid" />
+		<result property="group_id" column="group_id" />
+		<result property="user_id" column="user_id" />
+	</resultMap>
+	
+	<!-- 更新order -->
+	<update id="updateOrders" parameterType="Order">
+		update t_order 
+		set group_id= #{group_id} 
+		where orderid=#{orderid}
+	</update>
+	
+	<!-- 删除一条hotelgroup -->
+	<delete id="delOrders" parameterType="Order">
+		delete from t_order 
+		where orderid=#{orderid}
+	</delete>
+</mapper>
